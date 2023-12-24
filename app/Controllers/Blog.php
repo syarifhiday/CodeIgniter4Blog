@@ -8,6 +8,18 @@ class Blog extends BaseController
         $this->postModel = new PostsModel();
     }
 
+    public function home()
+    {
+        $post = $this->postModel->findAll();
+
+        $data = [
+            'title' => 'SecureDev',
+            'posts' => $post
+        ];
+
+        return view('home', $data);
+    }
+
     public function index()
     {
         $post = $this->postModel->findAll();
@@ -22,13 +34,15 @@ class Blog extends BaseController
 
     public function detail($permalink)
     {
+        $posts = $this->postModel->findAll();
         $post = $this->postModel->where(['permalink' => $permalink])->first();
         if(empty($post)){
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound(); 
         }
         $data = [
             'title' => $post['title'],
-            'post' => $post
+            'post' => $post,
+            'posts' => $posts
         ];
         
         return view('blog/detailPost', $data);

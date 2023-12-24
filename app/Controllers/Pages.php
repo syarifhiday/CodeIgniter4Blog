@@ -1,7 +1,14 @@
 <?php namespace App\Controllers;
+use App\Models\PostsModel;
+
 
 class Pages extends BaseController
 {
+    protected $postModel;
+    public function __construct(){
+        $this->postModel = new PostsModel();
+    }
+
     public function index($permalink = '')
     {
         echo "get mahasiswa $permalink";
@@ -9,8 +16,11 @@ class Pages extends BaseController
 
     public function about()
     {
+        $post = $this->postModel->findAll();
+
         $data = [
-            'title' => 'About Me'
+            'title' => 'About Me',
+            'posts' => $post
         ];
         
         return view('pages/about', $data);
@@ -18,8 +28,11 @@ class Pages extends BaseController
     }
     public function contact()
     {
+        $post = $this->postModel->findAll();
+
         $data = [
-            'title' => 'Contact'
+            'title' => 'Contact',
+            'posts' => $post
         ];
         
         return view('pages/contact', $data);
